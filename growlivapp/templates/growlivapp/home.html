@@ -1,0 +1,67 @@
+{% extends 'growlivapp/base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <style>
+        body, html {
+            height: 100%; /* Full height */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f7fafc; /* Adjust the background color as needed */
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 20px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        
+    </style>
+</head>
+<body>
+
+{% block body_block %}
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    <div class="contain">
+        <div class="main">
+            <img src="{% static "growlivapp/scan.png" %}" alt="Upload Image" class="growliv-logo" id="upload-image">
+            <div class="login-form">
+                <form method="post" action="{% url 'growlivapp:upload' %}" enctype="multipart/form-data"
+                      id="upload-form">
+                    {% csrf_token %}
+                    <input id="file-upload" type="file" name="video" style="display:none;"/>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('upload-image').addEventListener('click', function () {
+                document.getElementById('file-upload').click();
+            });
+
+            document.getElementById('file-upload').addEventListener('change', function () {
+                document.getElementById('loading-overlay').classList.add('active');
+                document.getElementById('upload-form').submit();
+            });
+        });
+    </script>
+{% endblock %}
+</body>
+</html>
